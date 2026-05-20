@@ -1,0 +1,5 @@
+import "../../interfaces/Disk.idl4";
+
+component Storage {
+    provides Disk disk;
+}

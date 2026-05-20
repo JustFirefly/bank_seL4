@@ -1,0 +1,10 @@
+import "../../interfaces/Auth.idl4";
+import "../../interfaces/Bank.idl4";
+
+component Client {
+    control; // Tells CAmkES this component has a main thread / run() function
+    uses Auth auth;
+    uses Bank bank;
+	
+    uses IOPort port;
+}

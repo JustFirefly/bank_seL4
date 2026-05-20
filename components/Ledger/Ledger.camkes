@@ -1,0 +1,7 @@
+import "../../interfaces/Bank.idl4";
+import "../../interfaces/Disk.idl4";
+
+component Ledger {
+    provides Bank bank;
+    uses Disk disk;
+}

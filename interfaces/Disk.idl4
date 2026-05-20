@@ -1,0 +1,3 @@
+procedure Disk {
+    int save_state(in int new_balance);
+};

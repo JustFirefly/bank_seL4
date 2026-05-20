@@ -1,0 +1,3 @@
+procedure Bank {
+    int transfer(in int token, in string to_user, in int amount);
+};

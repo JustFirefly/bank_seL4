@@ -1,0 +1,5 @@
+import "../../interfaces/Auth.idl4";
+
+component AuthServer {
+    provides Auth auth;
+}
