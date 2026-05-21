@@ -21,5 +21,13 @@ set_property(SOURCE components/Ledger/src/sqlite3.c APPEND PROPERTY COMPILE_OPTI
     "-DSQLITE_OMIT_WAL"
 )
 
+DeclareCAmkESComponent(NetworkStack
+    SOURCES components/NetworkStack/src/network_stack.c
+)
+
+DeclareCAmkESComponent(APIGateway
+    SOURCES components/APIGateway/src/gateway.c
+)
+
 # 4. Set the assembly blueprint as the root of the application
 DeclareCAmkESRootserver(banking_system.camkes)

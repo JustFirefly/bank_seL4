@@ -1,19 +1,39 @@
 import <std_connector.camkes>;
 
+import "interfaces/Auth.idl4";
+import "interfaces/Bank.idl4";
+import "interfaces/Network.idl4";
+
 import "components/Client/Client.camkes";
 import "components/AuthServer/AuthServer.camkes";
 import "components/Ledger/Ledger.camkes";
 import "components/Storage/Storage.camkes";
+import "components/NetworkStack/NetworkStack.camkes";
+
+component APIGateway {
+    control;
+    uses Network net;
+    uses Bank bank;
+    uses Auth auth;
+}
 
 assembly {
     composition {
+        // Instantiate components here
         component Client client;
         component AuthServer auth_server;
         component Ledger ledger;
         component Storage storage;
+        component NetworkStack net_stack;
+        component APIGateway gateway;
 
+        // Connections
         connection seL4RPCCall auth_conn(from client.auth, to auth_server.auth);
         connection seL4RPCCall bank_conn(from client.bank, to ledger.bank);
         connection seL4RPCCall disk_conn(from ledger.disk, to storage.disk);
+        connection seL4RPCCall net_to_gateway(from gateway.net, to net_stack.socket);
+        connection seL4RPCCall gateway_to_bank(from gateway.bank, to ledger.bank);
+        connection seL4RPCCall gateway_to_auth(from gateway.auth, to auth_server.auth);
+        connection seL4RPCCall client_to_net(from client.socket, to net_stack.socket);
     }
 }

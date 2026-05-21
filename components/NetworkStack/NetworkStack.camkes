@@ -1,0 +1,6 @@
+import "../../interfaces/Network.idl4";
+
+component NetworkStack {
+    control;
+    provides Network socket;
+}
