@@ -6,5 +6,4 @@ component Client {
     uses Auth auth;
     uses Bank bank;
 	
-    uses IOPort port;
 }

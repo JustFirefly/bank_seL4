@@ -5,29 +5,15 @@ import "components/AuthServer/AuthServer.camkes";
 import "components/Ledger/Ledger.camkes";
 import "components/Storage/Storage.camkes";
 
-component UART {
-    hardware;
-    provides IOPort port;
-}
-
-
 assembly {
     composition {
-        // 1. Instantiate the components
         component Client client;
         component AuthServer auth_server;
         component Ledger ledger;
         component Storage storage;
-        component UART uart;
 
-        // 2. Wire them together via explicit IPC connections
         connection seL4RPCCall auth_conn(from client.auth, to auth_server.auth);
         connection seL4RPCCall bank_conn(from client.bank, to ledger.bank);
         connection seL4RPCCall disk_conn(from ledger.disk, to storage.disk);
-	connection seL4HardwareIOPort uart_port(from client.port, to uart.port);
-   }
-   configuration{
-	// 3. Map x86 I/O port addresses for COM1
-	uart.port_attributes = "0x3F8:0x3FF";
-   }
+    }
 }

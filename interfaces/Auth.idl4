@@ -1,3 +1,4 @@
 procedure Auth {
     int login(in string user, in string pin);
+    int register_user(in string user, in string pin);
 };
