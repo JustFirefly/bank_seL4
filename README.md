@@ -1,6 +1,3 @@
-Here is the updated version of the `README.md` file, incorporating the requested change to the simulation command.
-
-```markdown
 # High-Assurance Banking System on seL4
 
 A showcase-level, component-based mock banking application built natively on the **seL4 microkernel** using the **CAmkES** (Component Architecture for microkernel-based Embedded Systems) framework. 
