@@ -144,6 +144,3 @@ The `Client` component runs an automated batch processor simulating runtime adve
 2. **Scenario 2 (Malicious Credentials):** An invalid user attempts to authenticate against the `AuthServer`. The request is scrutinized, rejected, and an invalid token handle is returned.
 3. **Scenario 3 (The Happy Path):** A valid user provides correct authentication via the `NetworkStack` and `APIGateway`. The `AuthServer` securely maps a token. The caller passes that token to the `Ledger`, which authorizes the transfer, updates state in SQLite, and invokes the `Storage` layer over IPC to securely commit the data.
 
-```
-
-```
