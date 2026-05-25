@@ -1,0 +1,5 @@
+component VirtioHardware {
+    hardware;
+    dataport Buf reg;
+    emits Interrupt irq;
+}

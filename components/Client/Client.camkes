@@ -6,5 +6,7 @@ component Client {
     control;
     uses Auth auth;
     uses Bank bank;
-    uses Network socket;
+    dataport Buf net_buffer;
+    emits Notification data_ready;
+    uses Network net;
 }

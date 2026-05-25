@@ -1,6 +1,11 @@
-import "../../interfaces/Network.idl4";
-
 component NetworkStack {
     control;
-    provides Network socket;
+    provides Network net;
+
+    // Check for this line exactly:
+    dataport Buf net_buffer;
+
+    // Hardware interfaces
+    dataport Buf virtio_mmio;
+    consumes Interrupt hardware_irq;
 }

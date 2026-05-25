@@ -9,31 +9,44 @@ import "components/AuthServer/AuthServer.camkes";
 import "components/Ledger/Ledger.camkes";
 import "components/Storage/Storage.camkes";
 import "components/NetworkStack/NetworkStack.camkes";
-
-component APIGateway {
-    control;
-    uses Network net;
-    uses Bank bank;
-    uses Auth auth;
-}
+import "components/APIGateway/APIGateway.camkes";
+import "components/NetworkStack/VirtioHardware.camkes";
 
 assembly {
     composition {
-        // Instantiate components here
+        // --- 1. Software Components ---
         component Client client;
         component AuthServer auth_server;
         component Ledger ledger;
         component Storage storage;
         component NetworkStack net_stack;
         component APIGateway gateway;
+        component VirtioHardware virtio_dev;
 
-        // Connections
+        // --- 2. SOFTWARE Connections ---
+        connection seL4RPCCall client_net(from client.net, to net_stack.net);
         connection seL4RPCCall auth_conn(from client.auth, to auth_server.auth);
         connection seL4RPCCall bank_conn(from client.bank, to ledger.bank);
         connection seL4RPCCall disk_conn(from ledger.disk, to storage.disk);
-        connection seL4RPCCall net_to_gateway(from gateway.net, to net_stack.socket);
+        connection seL4RPCCall net_to_gateway(from gateway.net, to net_stack.net);
         connection seL4RPCCall gateway_to_bank(from gateway.bank, to ledger.bank);
         connection seL4RPCCall gateway_to_auth(from gateway.auth, to auth_server.auth);
-        connection seL4RPCCall client_to_net(from client.socket, to net_stack.socket);
+
+        // --- 3. HARDWARE and SHARED Connection ---
+        connection seL4SharedData net_data_conn(from net_stack.net_buffer, to gateway.net_buffer);
+
+        connection seL4HardwareMMIO virtio_mmio_conn(from net_stack.virtio_mmio, to virtio_dev.reg);
+        connection seL4HardwareInterrupt irq_conn(from virtio_dev.irq, to net_stack.hardware_irq);
+
+        // Connect the notification signal
+        connection seL4Notification notify_conn(from client.data_ready, to gateway.data_ready);
+        // Connect the shared memory
+        connection seL4SharedData client_data_conn(from client.net_buffer, to gateway.net_buffer);
+    }
+
+    configuration {
+        virtio_dev.reg_paddr = 0x0a000000;
+        virtio_dev.reg_size = 0x1000;
+        virtio_dev.irq_irq_number = 33;
     }
 }

@@ -1,3 +1,6 @@
+Here is the updated version of the `README.md` file, incorporating the requested change to the simulation command.
+
+```markdown
 # High-Assurance Banking System on seL4
 
 A showcase-level, component-based mock banking application built natively on the **seL4 microkernel** using the **CAmkES** (Component Architecture for microkernel-based Embedded Systems) framework. 
@@ -24,13 +27,15 @@ In a traditional monolithic kernel (like Linux), a vulnerability in the UI or we
 |                     seL4 Microkernel                        |
 +-------------------------------------------------------------+
 
+
 ```
 
 ### Components
-*   **Client (Untrusted User Space):** Simulates an incoming queue of network/API requests. It holds no persistent state and communicates entirely via RPC calls to other components.
-*   **AuthServer (Trusted Space):** Validates user credentials and issues cryptographic capability tokens upon successful authentication.
-*   **Ledger (High-Assurance Space):** Houses the core state (bank balances) in memory, enforces authorization checks on tokens, and processes financial transactions.
-*   **Storage (Trusted Space):** A mock isolated block layer tasked with persisting ledger adjustments to a permanent backend. The ledger cannot touch disk directly; it must request this over IPC.
+
+* **Client (Untrusted User Space):** Simulates an incoming queue of network/API requests. It holds no persistent state and communicates entirely via RPC calls to other components.
+* **AuthServer (Trusted Space):** Validates user credentials and issues cryptographic capability tokens upon successful authentication.
+* **Ledger (High-Assurance Space):** Houses the core state (bank balances) in memory, enforces authorization checks on tokens, and processes financial transactions.
+* **Storage (Trusted Space):** A mock isolated block layer tasked with persisting ledger adjustments to a permanent backend. The ledger cannot touch disk directly; it must request this over IPC.
 
 ---
 
@@ -58,6 +63,7 @@ projects/camkes/apps/banking_system/
         ├── Storage.camkes
         └── src/storage.c          # Storage persistence boundary
 
+
 ```
 
 ---
@@ -68,6 +74,7 @@ projects/camkes/apps/banking_system/
 
 ```bash
 sudo pacman -S base-devel git cmake ninja dtc ccache repo python python-virtualenv qemu-system-x86
+
 
 ```
 
@@ -86,6 +93,7 @@ mkdir ~/sel4-workspace && cd ~/sel4-workspace
 repo init -u [https://github.com/seL4/camkes-manifest.git](https://github.com/seL4/camkes-manifest.git)
 repo sync
 
+
 ```
 
 ### 3. Build and Simulate
@@ -101,7 +109,8 @@ mkdir build && cd build
 
 # Compile system and run QEMU emulator
 ninja
-./simulate
+./simulate --extra-qemu-args="-netdev user,id=net0,hostfwd=tcp::8080-:8080 -device virtio-net-device,netdev=net0"
+
 
 ```
 

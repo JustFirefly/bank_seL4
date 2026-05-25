@@ -1,0 +1,16 @@
+import "../../interfaces/Network.idl4";
+import "../../interfaces/Bank.idl4";
+import "../../interfaces/Auth.idl4";
+
+component APIGateway {
+    control;
+    // Shared memory with NetworkStack
+    dataport Buf net_buffer;
+
+    consumes Notification data_ready;
+
+    // Interfaces for communication
+    uses Network net;
+    uses Bank bank;
+    uses Auth auth;
+}

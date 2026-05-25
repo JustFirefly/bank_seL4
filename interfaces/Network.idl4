@@ -1,4 +1,4 @@
 procedure Network {
-    int receive(out string buffer);
+    void wait_for_data(void);
     int send(in string buffer);
 };

@@ -1,3 +1,12 @@
 procedure Disk {
-    int save_state(in int new_balance);
+    int open(in string filename);
+    int close();
+
+    // We use CAmkES variable-length arrays (buf[]) to safely transmit
+    // binary SQLite pages without string null-termination corruption.
+    int read(in int offset, in int amount, out char buf[]);
+    int write(in int offset, in int amount, in char buf[]);
+
+    int get_size(out int size);
+    int sync();
 };
